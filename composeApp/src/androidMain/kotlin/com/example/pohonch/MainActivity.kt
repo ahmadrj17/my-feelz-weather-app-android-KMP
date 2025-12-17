@@ -6,14 +6,24 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import dev.jordond.compass.geolocation.Geolocator
+import dev.jordond.compass.geolocation.mobile.MobileLocator
+import dev.jordond.compass.permissions.LocationPermissionController 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        
         super.onCreate(savedInstanceState)
 
+        val permissionController = LocationPermissionController()
+        val geolocator = Geolocator(
+            MobileLocator(
+                permissionController = permissionController
+            )
+        )
+
         setContent {
-            App()
+            App(apiKey = BuildConfig.API_KEY, geolocator = geolocator)
         }
     }
 }
@@ -21,5 +31,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    // App()
 }
